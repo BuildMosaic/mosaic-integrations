@@ -1,0 +1,56 @@
+name: 🐛 Bug Report
+description: Report a problem with a Mosaic integration or this repository's build
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: input
+    id: integration
+    attributes:
+      label: Integration or module
+      description: Use "repository/build" for a build or automation issue.
+    validations:
+      required: true
+  - type: input
+    id: mosaic-version
+    attributes:
+      label: Mosaic version
+      description: Include integration artifact version or commit, if applicable.
+    validations:
+      required: true
+  - type: input
+    id: framework-version
+    attributes:
+      label: Framework and version
+      description: Include the framework name and version, or "not applicable".
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Java, Kotlin, and build environment
+      description: Include Java/Kotlin versions and relevant Gradle, OS, or container details.
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Provide a minimal runnable example or repository and exact steps. Remove secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include relevant logs or stack traces with secrets removed.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Include relevant DI setup, resource ownership, request lifecycle, or tracing configuration.

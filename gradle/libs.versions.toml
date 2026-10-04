@@ -1,0 +1,9 @@
+[versions]
+kotlin = "2.4.20"
+mosaic = "0.6.0"
+
+[libraries]
+mosaic-core = { module = "org.buildmosaic:mosaic-core", version.ref = "mosaic" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

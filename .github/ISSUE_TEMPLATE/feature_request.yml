@@ -1,0 +1,36 @@
+name: 🚀 Feature Request
+description: Describe a real integration problem or application use case
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What application problem are you trying to solve?
+      description: Explain the workflow and the manual wiring or limitation you encounter.
+    validations:
+      required: true
+  - type: input
+    id: framework
+    attributes:
+      label: Framework and versions
+      description: Include the framework, Mosaic version, and existing integration, if any.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired application behavior
+      description: Show how an application would use this capability and who should own its resources.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Current approach and alternatives
+      description: Share a concrete example if possible. A proposed shared abstraction is not required.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Link relevant public framework APIs or existing Mosaic capabilities.

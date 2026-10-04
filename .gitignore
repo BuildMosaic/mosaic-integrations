@@ -1,0 +1,14 @@
+# Gradle and Kotlin
+.gradle/
+.kotlin/
+**/build/
+!**/src/**/build/
+
+# IDEs and local files
+.idea/
+.vscode/
+.settings/
+.project
+.classpath
+*.iml
+.DS_Store
