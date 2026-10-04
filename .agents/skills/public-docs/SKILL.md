@@ -77,7 +77,7 @@ emoji, or an API inventory.
 
 Keep installation and first-use copy focused on getting started. Put supported
 Mosaic/framework versions and complete setup in the canonical framework-specific
-guide. Link to [Mosaic](https://github.com/Nick-Abbott/Mosaic) and
+guide. Link to [Mosaic](https://github.com/BuildMosaic/Mosaic) and
 [buildmosaic.org](https://buildmosaic.org) for core concepts rather than repeating
 core documentation. Explain that integrations reuse application infrastructure
 and preserve framework ownership; Mosaic core owns execution and Canvas behavior.

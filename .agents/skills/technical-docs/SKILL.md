@@ -53,9 +53,9 @@ present planned APIs as available.
    materially improve discovery, keeping a brief summary at broader entry points.
 
 Keep framework setup and behavior in the integration's canonical guide. Link to
-[Mosaic's core guide](https://github.com/Nick-Abbott/Mosaic/blob/main/mosaic-core/README.md)
+[Mosaic's core guide](https://github.com/BuildMosaic/Mosaic/blob/main/mosaic-core/README.md)
 for composition and Canvas concepts and
-[Mosaic's test guide](https://github.com/Nick-Abbott/Mosaic/blob/main/mosaic-test/README.md)
+[Mosaic's test guide](https://github.com/BuildMosaic/Mosaic/blob/main/mosaic-test/README.md)
 for core testing support. Do not duplicate core documentation or create empty
 guides for integrations that do not exist.
 

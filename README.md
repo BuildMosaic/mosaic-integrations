@@ -4,7 +4,7 @@
 
 **Make Mosaic fit naturally into the frameworks your application already uses.**
 
-The home of official framework integrations for [Mosaic](https://github.com/Nick-Abbott/Mosaic),
+The home of official framework integrations for [Mosaic](https://github.com/BuildMosaic/Mosaic),
 a Kotlin library for composable backend orchestration. Learn more at
 [buildmosaic.org](https://buildmosaic.org).
 
