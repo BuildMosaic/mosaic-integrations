@@ -18,7 +18,7 @@ Thanks for your interest in contributing! 🎉
 
 ## Development setup
 
-Use JDK 21 and the checked-in Gradle 8.14.4 wrapper:
+Use JDK 21 and the checked-in [Gradle wrapper](../gradle/wrapper/gradle-wrapper.properties):
 
 ```bash
 ./gradlew clean build --no-daemon
@@ -29,12 +29,12 @@ CI runs these commands on pushes and pull requests to `main`. The root build
 provides the Gradle lifecycle and dependency catalog. Adapter modules configure
 their own dependencies and behavioral tests.
 
-The Kotlin baseline is 2.4.20. When adding a library, configure a JDK 21 toolchain
+The [version catalog](../gradle/libs.versions.toml) defines Kotlin, Mosaic, and
+framework dependency versions. When adding a library, configure a JDK 21 toolchain
 and Kotlin JVM target plus Java source/target compatibility of 17, unless the
 integration requires a stricter minimum. Include real modules in
-`settings.gradle.kts` and use the version catalog for dependencies. Maven Central
-is the normal dependency repository; Mosaic 1.1.0 is the recorded dependency
-baseline. No local core checkout or Maven Local installation is required.
+`settings.gradle.kts`. Maven Central is the normal dependency repository. No local
+core checkout or Maven Local installation is required.
 
 ## Integration design
 
