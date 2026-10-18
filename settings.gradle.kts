@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "mosaic-integrations"
 
-include(":mosaic-spring", ":examples:spring")
+include(":mosaic-spring")

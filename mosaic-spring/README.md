@@ -4,11 +4,10 @@ Use Spring services from unchanged Mosaic Tiles through Canvas. Install one
 `SpringCanvasResolver`; services keep their normal Spring definitions.
 
 The tested combination is Mosaic Runtime **1.1.0**, Spring Framework **6.2.19**,
-and Kotlin **2.4.20**, built with JDK 21 for JVM target 17; tests and the example also run on JDK 17. Other
-framework versions and Spring Boot combinations are not verified. The adapter
+and Kotlin **2.4.20**, built with JDK 21 for JVM target 17. Tests run on JDK 17
+and 21. Other framework versions and Spring Boot combinations are not verified. The adapter
 uses `spring-beans`; application configuration uses your existing Spring context.
-No adapter artifact is published. The [example](../examples/spring) consumes
-`implementation(project(":mosaic-spring"))` from this checkout.
+No adapter artifact is published.
 
 ## Wire one Canvas
 
@@ -46,7 +45,7 @@ Avoid eager Canvas providers that introduce cycles during Spring bean creation.
 
 | Canvas key qualifier | Spring lookup |
 | --- | --- |
-| `null` | `getBeanProvider(type).getIfAvailable()`, including primary selection |
+| `null` | `getBeanProvider(type).getObject()`, including primary selection |
 | String | Exact bean name or alias, checked with `containsBean` then typed `getBean` |
 
 For example, `source<Service>("billing")` means the bean named or aliased
@@ -54,7 +53,9 @@ For example, `source<Service>("billing")` means the bean named or aliased
 Strings, including empty strings and whitespace, are passed unchanged. Existing
 names with an incompatible type throw Spring's type error. Only absence returns
 null from `sourceOrNull`; ambiguity, creation, and scope errors propagate.
-`source` reports absence with Mosaic's `MosaicMissingKeyException`.
+`source` reports absence with Mosaic's `MosaicMissingKeyException`. Inactive
+request scope throws `ScopeNotActiveException` for named and unqualified lookups,
+including `sourceOrNull`.
 
 Exact explicit Canvas bindings win, from the nearest layer through its ancestors,
 before the resolver runs. This also applies to eager provider construction. One
@@ -90,17 +91,15 @@ generic type tokens, collection injection, and injection-point metadata are not
 mapped. There is no auto-configuration or request-context propagation. Optional
 Mosaic analysis cannot infer dynamic framework bindings.
 
-## Run and verify
+## Verify
 
 From the repository root with JDK 21:
 
 ```sh
-./gradlew :examples:spring:run --no-daemon
 ./gradlew clean build --no-daemon
 ```
 
-The example prints `Hello from Spring` and checks the result. The build also
-runs it. Real Spring contexts test unchanged Tiles, primary/name/alias selection,
+Real Spring contexts test unchanged Tiles, primary/name/alias selection,
 errors, Canvas precedence, repeated lookups, ownership/rollback, and servlet
 request boundaries. See the [Mosaic core guide](https://github.com/BuildMosaic/Mosaic/blob/main/mosaic-core/README.md)
 for composition and Canvas APIs and [Spring's lookup contract](https://docs.spring.io/spring-framework/docs/6.2.x/javadoc-api/org/springframework/beans/factory/ObjectProvider.html)

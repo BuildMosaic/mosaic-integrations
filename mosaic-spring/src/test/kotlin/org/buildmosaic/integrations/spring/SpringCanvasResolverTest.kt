@@ -14,6 +14,7 @@ import org.buildmosaic.core.injection.sourceOrNull
 import org.buildmosaic.core.injection.withMosaic
 import org.springframework.beans.factory.BeanCreationException
 import org.springframework.beans.factory.BeanNotOfRequiredTypeException
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.BeanDefinitionCustomizer
@@ -38,6 +39,7 @@ class SpringCanvasResolverTest {
   interface Absent
   interface Choice
   interface Broken
+  interface MissingDependency
 
   class Resource : AutoCloseable {
     var closes = 0
@@ -131,6 +133,9 @@ class SpringCanvasResolverTest {
       context.registerBean("second", Choice::class.java, Supplier { object : Choice {} })
       context.registerBean("broken", Broken::class.java, Supplier { error("creation failed") },
         BeanDefinitionCustomizer { it.isLazyInit = true })
+      context.registerBean("missingDependency", MissingDependency::class.java,
+        Supplier { context.getBean(Absent::class.java); error("unreachable") },
+        BeanDefinitionCustomizer { it.isLazyInit = true })
       context.registerBeanDefinition("unregisteredScope", RootBeanDefinition(Resource::class.java).apply {
         scope = "unregistered"
       })
@@ -144,6 +149,9 @@ class SpringCanvasResolverTest {
         assertFailsWith<NoUniqueBeanDefinitionException> { root.sourceOrNull<Choice>() }
         assertFailsWith<BeanCreationException> { root.sourceOrNull<Broken>() }
         assertFailsWith<BeanCreationException> { root.sourceOrNull<Broken>("broken") }
+        assertEquals(NoSuchBeanDefinitionException::class, assertFailsWith<BeanCreationException> {
+          root.sourceOrNull<MissingDependency>()
+        }.rootCause!!::class)
         assertFailsWith<BeanNotOfRequiredTypeException> { root.sourceOrNull<Absent>("first") }
         assertFailsWith<IllegalStateException> { root.sourceOrNull<Resource>("unregisteredScope") }
       }
@@ -221,15 +229,25 @@ class SpringCanvasResolverTest {
       })
       context.refresh()
       canvas { dependencyResolver(SpringCanvasResolver(context)) }.use { root ->
+        assertFailsWith<ScopeNotActiveException> { context.getBean(Resource::class.java) }
         assertFailsWith<ScopeNotActiveException> { root.sourceOrNull<Resource>("request") }
+        assertFailsWith<ScopeNotActiveException> { root.sourceOrNull<Resource>() }
+        assertFailsWith<ScopeNotActiveException> { root.source<Resource>() }
+        assertFailsWith<ScopeNotActiveException> {
+          canvas {
+            dependencyResolver(SpringCanvasResolver(context))
+            provide<String> { source<Resource>(); "unreachable" }
+          }
+        }
         val firstRequest = ServletRequestAttributes(MockHttpServletRequest())
         RequestContextHolder.setRequestAttributes(firstRequest)
         val first: Resource
         try {
-          first = root.source<Resource>("request")
+          first = root.source<Resource>()
           assertSame(first, root.source<Resource>("request"))
           withContext(Dispatchers.Default) {
             assertFailsWith<ScopeNotActiveException> { root.sourceOrNull<Resource>("request") }
+            assertFailsWith<ScopeNotActiveException> { root.sourceOrNull<Resource>() }
           }
           assertEquals(0, first.closes)
         } finally {

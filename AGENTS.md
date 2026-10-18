@@ -1,8 +1,8 @@
 # Repository guide
 
 Mosaic Integrations owns first-party adapters between Mosaic and external
-application frameworks/platforms, along with their documentation, runnable
-examples, and compatibility tests. No adapters are published yet.
+application frameworks/platforms, along with their documentation and compatibility
+tests. No adapters are published yet.
 
 ## Integration boundaries
 
@@ -62,7 +62,8 @@ Neither skill is required for routine edits or authorizes unrelated cleanup.
 Use the cheapest test layer that decisively proves the behavior. Prefer actual
 framework integration tests over mocks for lifecycle, DI, tracing, and container
 behavior. Exercise supported versions and resource ownership at the public
-boundary. Keep examples complete and runnable; do not add fake modules or tests.
+boundary. Do not add fake modules or tests. For canonical framework example
+ownership, see [Contributing](.github/CONTRIBUTING.md#integration-design).
 
 Run before finalizing:
 

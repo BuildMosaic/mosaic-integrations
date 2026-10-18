@@ -27,7 +27,7 @@ git diff --check
 
 CI runs these commands on pushes and pull requests to `main`. The root build
 provides the Gradle lifecycle and dependency catalog. Adapter modules configure
-their own dependencies, behavioral tests, and runnable examples.
+their own dependencies and behavioral tests.
 
 The Kotlin baseline is 2.4.20. When adding a library, configure a JDK 21 toolchain
 and Kotlin JVM target plus Java source/target compatibility of 17, unless the
@@ -45,8 +45,10 @@ and Canvas behavior. Surface missing core extension points rather than duplicati
 runtime behavior or accessing internals.
 
 Each adapter needs explicit prerequisites, supported Mosaic/framework versions,
-setup, ownership and request-boundary behavior, limitations, and a runnable
-example. Shared abstractions need evidence from multiple real integrations.
+setup, ownership and request-boundary behavior, and limitations. Runnable framework
+applications live in [Mosaic](https://github.com/BuildMosaic/Mosaic/tree/main/examples);
+update those canonical examples after adapters are published. Shared abstractions
+need evidence from multiple real integrations.
 Artifact names, release versioning, and publication policy are not yet decided.
 
 See [AGENTS.md](../AGENTS.md) for repository boundaries and documentation skills,
