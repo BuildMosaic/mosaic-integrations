@@ -6,8 +6,9 @@ Tiles resolve Spring services without per-service registration or Mosaic configu
 Spring closes the Canvas at application shutdown.
 
 The tested combination is Mosaic Runtime **1.1.0**, Spring Boot **3.5.16** / Spring
-Framework **6.2.19**, and Kotlin **2.4.20**. Build JDK 21, JVM target 17; tests run
-on JDK 17 and 21. Other versions are not verified. No adapter artifact is published;
+Framework **6.2.19**, and Kotlin **2.2.21**. Kotlin consumers use the same language/API
+2.2 baseline as Mosaic Core. Build JDK 21, JVM target 17; tests run
+on JDK 17 and 21. Other framework versions are not verified. No adapter artifact is published;
 in this checkout the module is consumed with `implementation(project(":mosaic-spring"))`.
 Boot is a compile-only dependency of the adapter; a Boot application supplies its
 usual Boot dependencies and enables auto-configuration through `@SpringBootApplication`.

@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.4.20"
+kotlin = "2.2.21"
 mosaic = "1.1.0"
 coroutines = "1.11.0"
 junit = "5.12.2"
