@@ -1,15 +1,39 @@
 # Spring Canvas dependencies
 
-Use Spring services from unchanged Mosaic Tiles through Canvas. Install one
-`SpringCanvasResolver`; services keep their normal Spring definitions.
+Add `mosaic-spring` to a Spring Boot application and inject `Canvas`. Boot
+supplies one singleton Canvas connected to the application's bean factory; existing
+Tiles resolve Spring services without per-service registration or Mosaic configuration.
+Spring closes the Canvas at application shutdown.
 
-The tested combination is Mosaic Runtime **1.1.0**, Spring Framework **6.2.19**,
-and Kotlin **2.4.20**, built with JDK 21 for JVM target 17. Tests run on JDK 17
-and 21. Other framework versions and Spring Boot combinations are not verified. The adapter
-uses `spring-beans`; application configuration uses your existing Spring context.
-No adapter artifact is published.
+The tested combination is Mosaic Runtime **1.1.0**, Spring Boot **3.5.16** / Spring
+Framework **6.2.19**, and Kotlin **2.4.20**. Build JDK 21, JVM target 17; tests run
+on JDK 17 and 21. Other versions are not verified. No adapter artifact is published;
+in this checkout the module is consumed with `implementation(project(":mosaic-spring"))`.
+Boot is a compile-only dependency of the adapter; a Boot application supplies its
+usual Boot dependencies and enables auto-configuration through `@SpringBootApplication`.
 
-## Wire one Canvas
+## Use the injected Canvas
+
+```kotlin
+import org.buildmosaic.core.injection.Canvas
+import org.buildmosaic.core.injection.withMosaic
+import org.springframework.stereotype.Service
+
+@Service
+class GreetingHandler(private val canvas: Canvas) {
+  suspend fun greet(): String = canvas.withMosaic { compose(greetingTile) }
+}
+```
+
+The existing Tile uses ordinary `source<GreetingService>()` and needs no Spring
+annotations or imports. Finish Mosaic work before application shutdown.
+
+## Supply your own Canvas or use plain Spring
+
+Boot backs off when any application Canvas bean is defined. Your Canvas is used
+as supplied; the adapter does not install a resolver into it. The low-level
+`SpringCanvasResolver(BeanFactory)` remains available for custom wiring and plain
+Spring Framework applications, where Boot auto-configuration does not run:
 
 ```kotlin
 import kotlinx.coroutines.runBlocking
@@ -29,17 +53,9 @@ class MosaicConfig {
 }
 ```
 
-Inject this Canvas into a suspending handler and execute existing Tiles:
-
-```kotlin
-return mosaicCanvas.withMosaic { compose(greetingTile) }
-```
-
-The handler imports `org.buildmosaic.core.injection.withMosaic`. The Tile still
-uses ordinary `source<GreetingService>()`; it needs no Spring annotation or import.
-`runBlocking` bridges synchronous bean creation once, rather than each request.
-Spring closes the Canvas bean at shutdown. Finish Mosaic work before that shutdown.
-Avoid eager Canvas providers that introduce cycles during Spring bean creation.
+`runBlocking` bridges synchronous bean construction to the suspend Canvas builder
+at startup. It is not part of request execution. Custom factories must avoid eager
+provider lookups that create bean-construction cycles.
 
 ## Resolution and qualifiers
 
@@ -88,8 +104,8 @@ create a Spring request scope. Complete all request work before request completi
 
 Canvas keys carry a class and optional string: annotation-valued qualifiers,
 generic type tokens, collection injection, and injection-point metadata are not
-mapped. There is no auto-configuration or request-context propagation. Optional
-Mosaic analysis cannot infer dynamic framework bindings.
+mapped. Request-context propagation remains the application's responsibility.
+Optional Mosaic analysis cannot infer dynamic framework bindings.
 
 ## Verify
 
@@ -99,7 +115,9 @@ From the repository root with JDK 21:
 ./gradlew clean build --no-daemon
 ```
 
-Real Spring contexts test unchanged Tiles, primary/name/alias selection,
+Real Boot contexts test discovery through auto-configuration imports, constructor
+injection, custom Canvas backoff, Tile execution, and shutdown ownership.
+Real Spring contexts also test primary/name/alias selection,
 errors, Canvas precedence, repeated lookups, ownership/rollback, and servlet
 request boundaries. See the [Mosaic core guide](https://github.com/BuildMosaic/Mosaic/blob/main/mosaic-core/README.md)
 for composition and Canvas APIs and [Spring's lookup contract](https://docs.spring.io/spring-framework/docs/6.2.x/javadoc-api/org/springframework/beans/factory/ObjectProvider.html)

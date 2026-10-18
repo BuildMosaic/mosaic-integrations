@@ -22,12 +22,20 @@ Maven Central.
 
 ## Availability
 
-The [Spring Canvas adapter](mosaic-spring/README.md) lets existing Tiles resolve
-Spring services without registering each service in Canvas:
+Add the [Spring integration](mosaic-spring/README.md) to a Spring Boot application
+to make a Canvas connected to Spring DI available for constructor injection.
+Existing Tiles resolve managed services without application-specific Mosaic
+configuration. An application-provided Canvas takes precedence.
 
 ```kotlin
-canvas { dependencyResolver(SpringCanvasResolver(beanFactory)) }
+@Service
+class GreetingHandler(private val canvas: Canvas) {
+  suspend fun greet() = canvas.withMosaic { compose(greetingTile) }
+}
 ```
+
+Plain Spring Framework applications can use explicit configuration with the
+low-level resolver.
 
 No adapter artifacts are published. See the adapter guide for the exact tested
 versions, qualifier mapping, ownership, and request-scope boundaries.
