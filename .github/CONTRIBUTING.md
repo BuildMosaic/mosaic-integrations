@@ -26,14 +26,14 @@ git diff --check
 ```
 
 CI runs these commands on pushes and pull requests to `main`. The root build
-provides the Gradle lifecycle and dependency catalog; no adapter modules, tests,
-or formatting/static-analysis plugins are configured yet.
+provides the Gradle lifecycle and dependency catalog. Adapter modules configure
+their own dependencies, behavioral tests, and runnable examples.
 
 The Kotlin baseline is 2.4.20. When adding a library, configure a JDK 21 toolchain
 and Kotlin JVM target plus Java source/target compatibility of 17, unless the
 integration requires a stricter minimum. Include real modules in
 `settings.gradle.kts` and use the version catalog for dependencies. Maven Central
-is the normal dependency repository; Mosaic 0.6.0 is the recorded dependency
+is the normal dependency repository; Mosaic 1.1.0 is the recorded dependency
 baseline. No local core checkout or Maven Local installation is required.
 
 ## Integration design

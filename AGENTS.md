@@ -2,7 +2,7 @@
 
 Mosaic Integrations owns first-party adapters between Mosaic and external
 application frameworks/platforms, along with their documentation, runnable
-examples, and compatibility tests. No adapters are implemented or published yet.
+examples, and compatibility tests. No adapters are published yet.
 
 ## Integration boundaries
 
@@ -31,7 +31,7 @@ Use Gradle 8.14.4 with build JDK and toolchain 21. Future Kotlin libraries use
 Kotlin 2.4.20 and JVM target/minimum 17 unless an actual integration requires a
 stricter target. Configure both Kotlin JVM target and Java source/target
 compatibility when adding a library. The version catalog records released Mosaic
-0.6.0; it is a dependency version, not this repository's release version.
+1.1.0; it is a dependency version, not this repository's release version.
 
 Add real modules to `settings.gradle.kts` when implemented. There are no module
 conventions, formatting/static-analysis plugins, or publishing tasks yet. Add

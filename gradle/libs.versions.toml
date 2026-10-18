@@ -1,9 +1,16 @@
 [versions]
 kotlin = "2.4.20"
-mosaic = "0.6.0"
+mosaic = "1.1.0"
+coroutines = "1.11.0"
+junit = "5.12.2"
 
 [libraries]
 mosaic-core = { module = "org.buildmosaic:mosaic-core", version.ref = "mosaic" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
