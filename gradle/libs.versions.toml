@@ -26,7 +26,6 @@ spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-aut
 micronaut-context = { module = "io.micronaut:micronaut-context", version.ref = "micronaut" }
 micronaut-http-server = { module = "io.micronaut:micronaut-http-server", version.ref = "micronaut" }
 micronaut-inject-java = { module = "io.micronaut:micronaut-inject-java", version.ref = "micronaut" }
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version = "2.0.17" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

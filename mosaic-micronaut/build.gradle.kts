@@ -15,7 +15,6 @@ dependencies {
   testImplementation(platform(libs.junit.bom))
   testRuntimeOnly(libs.junit.jupiter.engine)
   testRuntimeOnly(libs.junit.platform.launcher)
-  testRuntimeOnly(libs.slf4j.simple)
 }
 
 kotlin {
