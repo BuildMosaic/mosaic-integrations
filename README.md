@@ -22,9 +22,16 @@ Maven Central.
 
 ## Availability
 
-No integrations are implemented or published yet. An integration is listed as
-available only once it is implemented and published, with its supported versions
-and a framework-specific guide.
+The [Spring Canvas adapter](mosaic-spring/README.md) is implemented in source and
+has a [runnable example](examples/spring). It lets existing Tiles resolve Spring
+services without registering each service in Canvas:
+
+```kotlin
+canvas { dependencyResolver(SpringCanvasResolver(beanFactory)) }
+```
+
+No adapter artifacts are published. See the adapter guide for the exact tested
+versions, qualifier mapping, ownership, and request-scope boundaries.
 
 ## Development
 
@@ -35,9 +42,9 @@ Use JDK 21 and the checked-in Gradle wrapper:
 git diff --check
 ```
 
-The build currently validates the Gradle foundation; there are no adapter modules
-or tests yet. See [Contributing](.github/CONTRIBUTING.md) for the build baseline and
-how to propose an integration.
+The build runs the adapter tests with real framework contexts and the executable
+example. See [Contributing](.github/CONTRIBUTING.md) for the build baseline and how
+to propose an integration.
 
 ## License
 

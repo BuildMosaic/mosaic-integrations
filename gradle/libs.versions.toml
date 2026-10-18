@@ -3,6 +3,7 @@ kotlin = "2.4.20"
 mosaic = "1.1.0"
 coroutines = "1.11.0"
 junit = "5.12.2"
+spring = "6.2.19"
 
 [libraries]
 mosaic-core = { module = "org.buildmosaic:mosaic-core", version.ref = "mosaic" }
@@ -11,6 +12,12 @@ kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", versi
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring" }
+spring-web = { module = "org.springframework:spring-web", version.ref = "spring" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring" }
+jakarta-servlet = { module = "jakarta.servlet:jakarta.servlet-api", version = "6.0.0" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
