@@ -4,8 +4,9 @@
 
 ### Added
 
-- Micronaut Canvas dependency resolver for Mosaic Runtime 1.1.0, with real-context
-  behavioral checks and qualifier/scope documentation.
+- Micronaut Canvas factory with automatic bean discovery and application-bean
+  backoff, plus a low-level resolver for Mosaic Runtime 1.1.0, real-context
+  behavioral checks, and qualifier/scope documentation.
 
 - Spring Boot Canvas auto-configuration with application-bean backoff, plus a
   low-level Spring resolver for Mosaic Runtime 1.1.0, real-context behavioral

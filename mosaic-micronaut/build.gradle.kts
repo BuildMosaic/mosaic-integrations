@@ -3,14 +3,15 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
   `java-library`
   alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.kotlin.kapt)
 }
 
 dependencies {
   api(libs.mosaic.core)
   api(libs.micronaut.context)
   testImplementation(libs.micronaut.http.server)
-  testAnnotationProcessor(libs.micronaut.inject.java)
-  testImplementation(libs.coroutines.core)
+  kapt(libs.micronaut.inject.java)
+  implementation(libs.coroutines.core)
   testImplementation(libs.kotlin.test.junit5)
   testImplementation(platform(libs.junit.bom))
   testRuntimeOnly(libs.junit.jupiter.engine)

@@ -29,3 +29,4 @@ micronaut-inject-java = { module = "io.micronaut:micronaut-inject-java", version
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }

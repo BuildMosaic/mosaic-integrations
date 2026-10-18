@@ -1,20 +1,41 @@
 # Micronaut Canvas dependencies
 
-Use Micronaut services from unchanged Mosaic Tiles through Canvas. Install one
-`MicronautCanvasResolver`; services keep their normal Micronaut definitions.
+Add `mosaic-micronaut` to a Micronaut application and inject `Canvas`. Micronaut
+discovers the adapter's bean definitions and supplies one singleton Canvas connected
+to its DI container. Existing Tiles need no changes, per-service registration, or
+application-specific Mosaic factory. Micronaut closes the Canvas at shutdown.
 
-The tested combination is Mosaic Runtime **1.1.0**, Micronaut **4.9.3**, and
-Kotlin **2.4.20**, built with JDK 21 for JVM target 17. Tests run on JDK 17 and 21.
-Other framework versions are not verified. The adapter uses `micronaut-context` and requires no
-annotation processing itself; your application's bean definitions use your
-normal Micronaut annotation processing. No adapter artifact is published.
+The tested combination is Mosaic Runtime **1.1.0**, Micronaut **4.9.3**, and Kotlin
+**2.4.20**. Build JDK 21, JVM target 17; tests run on JDK 17 and 21. Other versions
+are not verified. No adapter artifact is published; in this checkout the module
+is consumed with `implementation(project(":mosaic-micronaut"))`. The adapter's
+bean definitions ship in its JAR; no adapter-specific annotation-processing or
+package-scanning configuration is needed in the application.
 
-## Wire one Canvas
-
-In a Kotlin application with Micronaut annotation processing:
+## Use the injected Canvas
 
 ```kotlin
-import io.micronaut.context.BeanContext
+import jakarta.inject.Singleton
+import org.buildmosaic.core.injection.Canvas
+import org.buildmosaic.core.injection.withMosaic
+
+@Singleton
+class GreetingHandler(private val canvas: Canvas) {
+  suspend fun greet(): String = canvas.withMosaic { compose(greetingTile) }
+}
+```
+
+The existing Tile uses ordinary `source<GreetingService>()` and needs no Micronaut
+annotations or imports. Finish Mosaic work before application shutdown.
+
+## Supply your own Canvas
+
+The default factory backs off when the application defines a Canvas. Your Canvas
+is used as supplied; the adapter does not install a resolver into it. For example,
+custom wiring can still use the low-level `MicronautCanvasResolver(BeanLocator)`:
+
+```kotlin
+import io.micronaut.context.BeanLocator
 import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Singleton
@@ -24,26 +45,21 @@ import org.buildmosaic.core.injection.canvas
 import org.buildmosaic.integrations.micronaut.MicronautCanvasResolver
 
 @Factory
-class MosaicFactory {
+class ApplicationCanvasFactory {
   @Singleton
   @Bean(preDestroy = "close")
-  fun mosaicCanvas(beans: BeanContext): Canvas = runBlocking {
-    canvas { dependencyResolver(MicronautCanvasResolver(beans)) }
+  fun applicationCanvas(beans: BeanLocator): Canvas = runBlocking {
+    canvas {
+      dependencyResolver(MicronautCanvasResolver(beans))
+      // Add application-specific bindings here.
+    }
   }
 }
 ```
 
-Inject this Canvas into a suspending handler and execute existing Tiles:
-
-```kotlin
-return mosaicCanvas.withMosaic { compose(greetingTile) }
-```
-
-The handler imports `org.buildmosaic.core.injection.withMosaic`. The Tile still
-uses ordinary `source<GreetingService>()`; it needs no Micronaut annotation or
-import. `runBlocking` bridges synchronous bean creation once, rather than each
-request. Micronaut closes the Canvas bean at shutdown. Finish Mosaic work before
-that shutdown. Avoid eager Canvas providers that introduce bean-creation cycles.
+`runBlocking` bridges synchronous bean construction to the suspend Canvas builder
+at startup. It is not part of request execution. Custom factories must avoid eager
+provider lookups that create bean-construction cycles.
 
 ## Resolution and qualifiers
 
@@ -95,8 +111,8 @@ request lifetime.
 
 Canvas keys carry a class and optional string: annotation-valued qualifiers,
 generic type tokens, collection injection, and injection-point metadata are not
-mapped. There is no auto-configuration or request-context propagation. Optional
-Mosaic analysis cannot infer dynamic framework bindings.
+mapped. Request-context propagation remains the application's responsibility.
+Optional Mosaic analysis cannot infer dynamic framework bindings.
 
 ## Verify
 
@@ -106,7 +122,8 @@ From the repository root with JDK 21:
 ./gradlew clean build --no-daemon
 ```
 
-Real Micronaut contexts test unchanged Tiles, primary/named selection,
+Real Micronaut contexts test library bean discovery, constructor injection, custom
+Canvas backoff, Tile execution, and shutdown ownership. They also test primary/named selection,
 errors, Canvas precedence, repeated lookups, ownership/rollback, and request-proxy
 boundaries. See the [Mosaic core guide](https://github.com/BuildMosaic/Mosaic/blob/main/mosaic-core/README.md)
 for composition and Canvas APIs and [Micronaut's lookup contract](https://docs.micronaut.io/4.9.3/api/io/micronaut/context/BeanLocator.html)
