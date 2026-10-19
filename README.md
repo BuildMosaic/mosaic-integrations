@@ -37,8 +37,12 @@ class GreetingHandler(private val canvas: Canvas) {
 Plain Spring Framework applications can use explicit configuration with the
 low-level resolver.
 
-No adapter artifacts are published. See the adapter guide for the exact tested
-versions, qualifier mapping, ownership, and request-scope boundaries.
+The [Micronaut integration](mosaic-micronaut/README.md) discovers and supplies a
+Canvas in the same way through Micronaut's native bean definitions. Inject it into
+an ordinary `@Singleton` service; an application-provided Canvas takes precedence.
+
+No adapter artifacts are published. See the adapter guides for the exact tested
+versions, qualifier mappings, ownership, and request-scope boundaries.
 
 ## Development
 

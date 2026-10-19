@@ -5,6 +5,7 @@ coroutines = "1.11.0"
 junit = "5.12.2"
 spring = "6.2.19"
 spring-boot = "3.5.16"
+micronaut = "4.9.3"
 
 [libraries]
 mosaic-core = { module = "org.buildmosaic:mosaic-core", version.ref = "mosaic" }
@@ -22,5 +23,10 @@ jakarta-servlet = { module = "jakarta.servlet:jakarta.servlet-api", version = "6
 
 spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure", version.ref = "spring-boot" }
 
+micronaut-context = { module = "io.micronaut:micronaut-context", version.ref = "micronaut" }
+micronaut-http-server = { module = "io.micronaut:micronaut-http-server", version.ref = "micronaut" }
+micronaut-inject-java = { module = "io.micronaut:micronaut-inject-java", version.ref = "micronaut" }
+
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
