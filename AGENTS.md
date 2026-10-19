@@ -1,8 +1,8 @@
 # Repository guide
 
 Mosaic Integrations owns first-party adapters between Mosaic and external
-application frameworks/platforms, along with their documentation, runnable
-examples, and compatibility tests. No adapters are implemented or published yet.
+application frameworks/platforms, along with their documentation and compatibility
+tests. No adapters are published yet.
 
 ## Integration boundaries
 
@@ -27,11 +27,12 @@ examples, and compatibility tests. No adapters are implemented or published yet.
 
 ## Build baseline
 
-Use Gradle 8.14.4 with build JDK and toolchain 21. Future Kotlin libraries use
-Kotlin 2.4.20 and JVM target/minimum 17 unless an actual integration requires a
-stricter target. Configure both Kotlin JVM target and Java source/target
-compatibility when adding a library. The version catalog records released Mosaic
-0.6.0; it is a dependency version, not this repository's release version.
+Use the checked-in [Gradle wrapper](gradle/wrapper/gradle-wrapper.properties)
+with build JDK and toolchain 21. Read the [version catalog](gradle/libs.versions.toml)
+for Kotlin and released Mosaic dependency versions. Kotlin libraries target JVM 17
+unless an actual integration requires a stricter minimum. Configure both Kotlin
+JVM target and Java source/target compatibility when adding a library. Mosaic's
+catalog version is a dependency version, not this repository's release version.
 
 Add real modules to `settings.gradle.kts` when implemented. There are no module
 conventions, formatting/static-analysis plugins, or publishing tasks yet. Add
@@ -62,7 +63,8 @@ Neither skill is required for routine edits or authorizes unrelated cleanup.
 Use the cheapest test layer that decisively proves the behavior. Prefer actual
 framework integration tests over mocks for lifecycle, DI, tracing, and container
 behavior. Exercise supported versions and resource ownership at the public
-boundary. Keep examples complete and runnable; do not add fake modules or tests.
+boundary. Do not add fake modules or tests. For canonical framework example
+ownership, see [Contributing](.github/CONTRIBUTING.md#integration-design).
 
 Run before finalizing:
 

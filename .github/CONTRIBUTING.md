@@ -18,7 +18,7 @@ Thanks for your interest in contributing! 🎉
 
 ## Development setup
 
-Use JDK 21 and the checked-in Gradle 8.14.4 wrapper:
+Use JDK 21 and the checked-in [Gradle wrapper](../gradle/wrapper/gradle-wrapper.properties):
 
 ```bash
 ./gradlew clean build --no-daemon
@@ -26,15 +26,15 @@ git diff --check
 ```
 
 CI runs these commands on pushes and pull requests to `main`. The root build
-provides the Gradle lifecycle and dependency catalog; no adapter modules, tests,
-or formatting/static-analysis plugins are configured yet.
+provides the Gradle lifecycle and dependency catalog. Adapter modules configure
+their own dependencies and behavioral tests.
 
-The Kotlin baseline is 2.4.20. When adding a library, configure a JDK 21 toolchain
+The [version catalog](../gradle/libs.versions.toml) defines Kotlin, Mosaic, and
+framework dependency versions. When adding a library, configure a JDK 21 toolchain
 and Kotlin JVM target plus Java source/target compatibility of 17, unless the
 integration requires a stricter minimum. Include real modules in
-`settings.gradle.kts` and use the version catalog for dependencies. Maven Central
-is the normal dependency repository; Mosaic 0.6.0 is the recorded dependency
-baseline. No local core checkout or Maven Local installation is required.
+`settings.gradle.kts`. Maven Central is the normal dependency repository. No local
+core checkout or Maven Local installation is required.
 
 ## Integration design
 
@@ -45,8 +45,10 @@ and Canvas behavior. Surface missing core extension points rather than duplicati
 runtime behavior or accessing internals.
 
 Each adapter needs explicit prerequisites, supported Mosaic/framework versions,
-setup, ownership and request-boundary behavior, limitations, and a runnable
-example. Shared abstractions need evidence from multiple real integrations.
+setup, ownership and request-boundary behavior, and limitations. Runnable framework
+applications live in [Mosaic](https://github.com/BuildMosaic/Mosaic/tree/main/examples);
+update those canonical examples after adapters are published. Shared abstractions
+need evidence from multiple real integrations.
 Artifact names, release versioning, and publication policy are not yet decided.
 
 See [AGENTS.md](../AGENTS.md) for repository boundaries and documentation skills,

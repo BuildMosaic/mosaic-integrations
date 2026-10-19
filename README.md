@@ -22,9 +22,23 @@ Maven Central.
 
 ## Availability
 
-No integrations are implemented or published yet. An integration is listed as
-available only once it is implemented and published, with its supported versions
-and a framework-specific guide.
+Add the [Spring integration](mosaic-spring/README.md) to a Spring Boot application
+to make a Canvas connected to Spring DI available for constructor injection.
+Existing Tiles resolve managed services without application-specific Mosaic
+configuration. An application-provided Canvas takes precedence.
+
+```kotlin
+@Service
+class GreetingHandler(private val canvas: Canvas) {
+  suspend fun greet() = canvas.withMosaic { compose(greetingTile) }
+}
+```
+
+Plain Spring Framework applications can use explicit configuration with the
+low-level resolver.
+
+No adapter artifacts are published. See the adapter guide for the exact tested
+versions, qualifier mapping, ownership, and request-scope boundaries.
 
 ## Development
 
@@ -35,9 +49,9 @@ Use JDK 21 and the checked-in Gradle wrapper:
 git diff --check
 ```
 
-The build currently validates the Gradle foundation; there are no adapter modules
-or tests yet. See [Contributing](.github/CONTRIBUTING.md) for the build baseline and
-how to propose an integration.
+The build runs adapter tests with real framework contexts. See
+[Contributing](.github/CONTRIBUTING.md) for the build baseline and how to propose
+an integration.
 
 ## License
 
