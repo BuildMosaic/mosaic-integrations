@@ -6,7 +6,8 @@ to its DI container. Existing Tiles need no changes, per-service registration, o
 application-specific Mosaic factory. Micronaut closes the Canvas at shutdown.
 
 The tested combination is Mosaic Runtime **1.1.0**, Micronaut **4.9.3**, and Kotlin
-**2.4.20**. Build JDK 21, JVM target 17; tests run on JDK 17 and 21. Other versions
+**2.2.21**. Kotlin consumers use the same language/API 2.2 baseline as Mosaic Core.
+Build JDK 21, JVM target 17; tests run on JDK 17 and 21. Other framework versions
 are not verified. No adapter artifact is published; in this checkout the module
 is consumed with `implementation(project(":mosaic-micronaut"))`. The adapter's
 bean definitions ship in its JAR; no adapter-specific annotation-processing or
